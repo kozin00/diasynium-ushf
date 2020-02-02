@@ -6,7 +6,6 @@ import 'package:carousel_pro/carousel_pro.dart';
 
 import 'package:flutter_icons/flutter_icons.dart';
 
-
 //enum bottomIcons { home, products, favourites }
 enum bottomIcons { products, home, inventory, profile }
 
@@ -26,6 +25,7 @@ class _HomeState extends State<Home> {
   Color primaryColor = Colors.white;
   Color active = Color(0xFF20BF55);
   Color inactive = Colors.white;
+  Color mainTheme = Color(0xFF011627);
   ScrollController _scrollAppBarControllerHome = new ScrollController();
   ScrollController _scrollAppBarControllerProducts = new ScrollController();
   ScrollController _scrollAppBarControllerMessages = new ScrollController();
@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
 
   bool _searchSelected = false;
 
-  int _screen = 1;
+  int _screen = 0;
 
   Widget searchBar() {
     return Padding(
@@ -122,9 +122,9 @@ class _HomeState extends State<Home> {
                 child: Row(
                   children: <Widget>[
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(40),
+                      borderRadius: BorderRadius.circular(20),
                       child: Container(
-                        color: Colors.redAccent[400],
+                        color: Colors.redAccent[700],
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -149,8 +149,6 @@ class _HomeState extends State<Home> {
   Widget body() {
     switch (_screen) {
       case 0:
-        break;
-      case 1:
         return Container(
           child: ListView(
             children: <Widget>[
@@ -161,7 +159,7 @@ class _HomeState extends State<Home> {
                   children: <Widget>[
                     Text(
                       "Categories",
-                      style: TextStyle(color: Color(0xFF114B5F), fontSize: 20),
+                      style: TextStyle(color: Color(0xFF114B5F), fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       width: 270,
@@ -170,19 +168,18 @@ class _HomeState extends State<Home> {
                       child: IconButton(
                           onPressed: () {},
                           icon: Icon(Icons.more_horiz,
-                              color: Colors.redAccent[400])),
+                              color: Colors.redAccent[700])),
                     )
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: categoriesView(),
-              ),
+              categoriesView(),
               imageCarousel(),
             ],
           ),
         );
+        break;
+      case 1:
         break;
       case 2:
         return null;
@@ -191,67 +188,87 @@ class _HomeState extends State<Home> {
   }
 
   Widget navigationBar() {
-    return Material(
-      shape: RoundedRectangleBorder(side: BorderSide(color: Colors.black12)),
+    return SizedBox(
+      height: 70,
       child: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
               backgroundColor: primaryColor,
               icon: Padding(
-                padding: const EdgeInsets.only(top: 10.0),
+                padding: const EdgeInsets.only(top: 12.0),
+                child: _selectedItem == bottomIcons.home
+                    ? Icon(Icons.home, size: 28.0, color: inactive)
+                    : Icon(Icons.home, size: 28.0, color: inactive),
+              ),
+              title: Text('')),
+          BottomNavigationBarItem(
+              backgroundColor: primaryColor,
+              icon: Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: _selectedItem == bottomIcons.inventory
+                    ? Icon(Icons.view_stream, size: 28.0, color: inactive)
+                    : Icon(Icons.view_stream, size: 28.0, color: inactive),
+              ),
+              title: Text('')),
+          BottomNavigationBarItem(
+              backgroundColor: primaryColor,
+              icon: Padding(
+                padding: const EdgeInsets.only(top: 12.0),
                 child: _selectedItem == bottomIcons.products
                     ? Icon(
                         Icons.shopping_cart,
-                        size: 30.0,
+                        size: 28.0,
                         color: inactive,
                       )
-                    : Icon(OMIcons.shoppingCart, size: 30.0, color: inactive),
+                    : Icon(Icons.shopping_cart, size: 28.0, color: inactive),
               ),
               title: Text('')),
           BottomNavigationBarItem(
               backgroundColor: primaryColor,
               icon: Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: _selectedItem == bottomIcons.home
-                    ? Icon(Icons.home, size: 31.0, color: inactive)
-                    : Icon(OMIcons.home, size: 31.0, color: inactive),
-              ),
-              title: Text('')),
-          BottomNavigationBarItem(
-              backgroundColor: primaryColor,
-              icon: Padding(
-                padding: const EdgeInsets.only(top: 10.0),
+                padding: const EdgeInsets.only(top: 12.0),
                 child: _selectedItem == bottomIcons.profile
-                    ? Icon(Icons.person, size: 30.0, color: inactive)
-                    : Icon(OMIcons.person, size: 30.0, color: inactive),
+                    ? Icon(Icons.person, size: 28.0, color: inactive)
+                    : Icon(Icons.person, size: 28.0, color: inactive),
               ),
               title: Text('')),
         ],
         currentIndex: current,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color(0xFF011627),
+        backgroundColor: mainTheme,
         onTap: (index) {
           setState(() {
             current = index;
             switch (current) {
               case 0:
-                _selectedItem = bottomIcons.products;
-                _data = "Products";
+                _selectedItem = bottomIcons.home;
+                _data = "Home";
                 _screen = 0;
+                _showAppbar = true;
+                _searchSelected = false;
+                isScrollingDown = false;
+                break;
+
+              case 1:
+                _selectedItem = bottomIcons.inventory;
+                _data = "Catalog";
+                _screen = 1;
                 _showAppbar = true;
                 _searchSelected = false;
                 isScrollingDown = false;
 
                 break;
-              case 1:
-                _selectedItem = bottomIcons.home;
-                _data = "Home";
-                _screen = 1;
+                break;
+              case 2:
+                _selectedItem = bottomIcons.products;
+                _data = "Products";
+                _screen = 2;
                 _showAppbar = true;
                 _searchSelected = false;
                 isScrollingDown = false;
+
                 break;
-              case 2:
+              case 3:
                 _selectedItem = bottomIcons.profile;
                 _scaffoldkey.currentState.openEndDrawer();
                 _searchSelected = true;
@@ -293,13 +310,13 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              decoration: BoxDecoration(color: Color(0xFF20BF55)),
+              decoration: BoxDecoration(color: mainTheme),
             ),
             InkWell(
               onTap: () {},
               child: ListTile(
                   title: Text("Account"),
-                  leading: Icon(Icons.person, color: Color(0xFF20BF55))),
+                  leading: Icon(Icons.person, color: mainTheme)),
             ),
             InkWell(
               onTap: () {},
@@ -307,7 +324,7 @@ class _HomeState extends State<Home> {
                 title: Text("Orders"),
                 leading: Icon(
                   Icons.shopping_basket,
-                  color: Color(0xFF20BF55),
+                  color: mainTheme,
                 ),
               ),
             ),
@@ -315,7 +332,7 @@ class _HomeState extends State<Home> {
               onTap: () {},
               child: ListTile(
                 title: Text("Shopping Cart"),
-                leading: Icon(Icons.shopping_cart, color: Color(0xFF20BF55)),
+                leading: Icon(Icons.shopping_cart, color: mainTheme),
               ),
             ),
             Divider(),
