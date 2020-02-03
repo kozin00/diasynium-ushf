@@ -6,8 +6,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 
 import 'package:flutter_icons/flutter_icons.dart';
 
-//enum bottomIcons { home, products, favourites }
-enum bottomIcons { products, home, inventory, profile }
+enum bottomIcons { products, home, inventory }
 
 class Home extends StatefulWidget {
   @override
@@ -18,10 +17,8 @@ class _HomeState extends State<Home> {
   GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey();
 
   var current = 0;
-  bool _showAppbar = true;
   bool isScrollingDown = false;
   bottomIcons _selectedItem = bottomIcons.home;
-  String _data = "HOME";
   Color primaryColor = Colors.white;
   Color active = Color(0xFF20BF55);
   Color inactive = Colors.white;
@@ -159,7 +156,10 @@ class _HomeState extends State<Home> {
                   children: <Widget>[
                     Text(
                       "Categories",
-                      style: TextStyle(color: Color(0xFF114B5F), fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Color(0xFF114B5F),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       width: 270,
@@ -189,7 +189,7 @@ class _HomeState extends State<Home> {
 
   Widget navigationBar() {
     return SizedBox(
-      height: 70,
+      height: 72,
       child: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -197,8 +197,21 @@ class _HomeState extends State<Home> {
               icon: Padding(
                 padding: const EdgeInsets.only(top: 12.0),
                 child: _selectedItem == bottomIcons.home
-                    ? Icon(Icons.home, size: 28.0, color: inactive)
-                    : Icon(Icons.home, size: 28.0, color: inactive),
+                    ? Stack(
+                        children: <Widget>[
+                          Icon(Icons.home, size: 30.0, color: inactive),
+                          Positioned(
+                            child: Icon(
+                              Icons.fiber_manual_record,
+                              color: Colors.lightGreen[800],
+                              size: 16,
+                            ),
+                            top: 16,
+                            left: 16,
+                          )
+                        ],
+                      )
+                    : Icon(Icons.home, size: 30.0, color: inactive),
               ),
               title: Text('')),
           BottomNavigationBarItem(
@@ -206,8 +219,21 @@ class _HomeState extends State<Home> {
               icon: Padding(
                 padding: const EdgeInsets.only(top: 12.0),
                 child: _selectedItem == bottomIcons.inventory
-                    ? Icon(Icons.view_stream, size: 28.0, color: inactive)
-                    : Icon(Icons.view_stream, size: 28.0, color: inactive),
+                    ? Stack(
+                        children: <Widget>[
+                          Icon(Icons.view_stream, size: 30.0, color: inactive),
+                          Positioned(
+                            child: Icon(
+                              Icons.fiber_manual_record,
+                              color: Colors.lightGreen[800],
+                              size: 16,
+                            ),
+                            top: 16,
+                            left: 16,
+                          )
+                        ],
+                      )
+                    : Icon(Icons.view_stream, size: 30.0, color: inactive),
               ),
               title: Text('')),
           BottomNavigationBarItem(
@@ -215,10 +241,23 @@ class _HomeState extends State<Home> {
               icon: Padding(
                 padding: const EdgeInsets.only(top: 12.0),
                 child: _selectedItem == bottomIcons.products
-                    ? Icon(
-                        Icons.shopping_cart,
-                        size: 28.0,
-                        color: inactive,
+                    ? Stack(
+                        children: <Widget>[
+                          Icon(
+                            Icons.shopping_cart,
+                            size: 28.0,
+                            color: inactive,
+                          ),
+                          Positioned(
+                            child: Icon(
+                              Icons.fiber_manual_record,
+                              color: Colors.lightGreen[800],
+                              size: 16,
+                            ),
+                            top: 16,
+                            left: 16,
+                          )
+                        ],
                       )
                     : Icon(Icons.shopping_cart, size: 28.0, color: inactive),
               ),
@@ -227,9 +266,7 @@ class _HomeState extends State<Home> {
               backgroundColor: primaryColor,
               icon: Padding(
                 padding: const EdgeInsets.only(top: 12.0),
-                child: _selectedItem == bottomIcons.profile
-                    ? Icon(Icons.person, size: 28.0, color: inactive)
-                    : Icon(Icons.person, size: 28.0, color: inactive),
+                child: Icon(Icons.person, size: 30.0, color: inactive),
               ),
               title: Text('')),
         ],
@@ -242,37 +279,25 @@ class _HomeState extends State<Home> {
             switch (current) {
               case 0:
                 _selectedItem = bottomIcons.home;
-                _data = "Home";
                 _screen = 0;
-                _showAppbar = true;
                 _searchSelected = false;
                 isScrollingDown = false;
                 break;
-
               case 1:
                 _selectedItem = bottomIcons.inventory;
-                _data = "Catalog";
                 _screen = 1;
-                _showAppbar = true;
                 _searchSelected = false;
                 isScrollingDown = false;
-
-                break;
                 break;
               case 2:
                 _selectedItem = bottomIcons.products;
-                _data = "Products";
                 _screen = 2;
-                _showAppbar = true;
                 _searchSelected = false;
                 isScrollingDown = false;
-
                 break;
               case 3:
-                _selectedItem = bottomIcons.profile;
                 _scaffoldkey.currentState.openEndDrawer();
                 _searchSelected = true;
-                _showAppbar = true;
                 isScrollingDown = false;
                 break;
             }
@@ -321,6 +346,12 @@ class _HomeState extends State<Home> {
             InkWell(
               onTap: () {},
               child: ListTile(
+                  title: Text("Favourites"),
+                  leading: Icon(Icons.favorite, color: Colors.red)),
+            ),
+            InkWell(
+              onTap: () {},
+              child: ListTile(
                 title: Text("Orders"),
                 leading: Icon(
                   Icons.shopping_basket,
@@ -336,12 +367,21 @@ class _HomeState extends State<Home> {
               ),
             ),
             Divider(),
+
+            InkWell(
+              onTap: () {},
+              child: ListTile(
+                title: Text("Help"),
+                leading:
+                    Icon(Icons.help, color: Colors.lightBlue),
+              ),
+            ),
             InkWell(
               onTap: () {},
               child: ListTile(
                 title: Text("Log out"),
                 leading:
-                    Icon(Icons.transit_enterexit, color: Color(0xFF20BF55)),
+                Icon(Icons.transit_enterexit, color: Colors.grey),
               ),
             )
           ],
