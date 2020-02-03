@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:carousel_pro/carousel_pro.dart';
+import 'package:uncle_sam_hf/main.dart';
 
 enum bottomIcons { products, home, inventory }
 
@@ -19,16 +18,9 @@ class _HomeState extends State<Home> {
   var current = 0;
   bool isScrollingDown = false;
   bottomIcons _selectedItem = bottomIcons.home;
+  //Color active= Color(0xFF20BF55);
   Color primaryColor = Colors.white;
-  Color active = Color(0xFF20BF55);
-  Color inactive = Colors.white;
   Color mainTheme = Color(0xFF011627);
-  ScrollController _scrollAppBarControllerHome = new ScrollController();
-  ScrollController _scrollAppBarControllerProducts = new ScrollController();
-  ScrollController _scrollAppBarControllerMessages = new ScrollController();
-  ScrollController _scrollAppBarControllerFavourites = new ScrollController();
-
-  bool _searchSelected = false;
 
   int _screen = 0;
 
@@ -157,7 +149,7 @@ class _HomeState extends State<Home> {
                     Text(
                       "Categories",
                       style: TextStyle(
-                          color: Color(0xFF114B5F),
+                          color: mainTheme,//Color(0xFF114B5F),
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
                     ),
@@ -199,7 +191,7 @@ class _HomeState extends State<Home> {
                 child: _selectedItem == bottomIcons.home
                     ? Stack(
                         children: <Widget>[
-                          Icon(Icons.home, size: 30.0, color: inactive),
+                          Icon(Icons.home, size: 30.0, color: primaryColor),
                           Positioned(
                             child: Icon(
                               Icons.fiber_manual_record,
@@ -211,7 +203,7 @@ class _HomeState extends State<Home> {
                           )
                         ],
                       )
-                    : Icon(Icons.home, size: 30.0, color: inactive),
+                    : Icon(Icons.home, size: 30.0, color: primaryColor),
               ),
               title: Text('')),
           BottomNavigationBarItem(
@@ -221,7 +213,7 @@ class _HomeState extends State<Home> {
                 child: _selectedItem == bottomIcons.inventory
                     ? Stack(
                         children: <Widget>[
-                          Icon(Icons.view_stream, size: 30.0, color: inactive),
+                          Icon(Icons.view_stream, size: 30.0, color: primaryColor),
                           Positioned(
                             child: Icon(
                               Icons.fiber_manual_record,
@@ -233,7 +225,7 @@ class _HomeState extends State<Home> {
                           )
                         ],
                       )
-                    : Icon(Icons.view_stream, size: 30.0, color: inactive),
+                    : Icon(Icons.view_stream, size: 30.0, color: primaryColor),
               ),
               title: Text('')),
           BottomNavigationBarItem(
@@ -246,7 +238,7 @@ class _HomeState extends State<Home> {
                           Icon(
                             Icons.shopping_cart,
                             size: 28.0,
-                            color: inactive,
+                            color: primaryColor,
                           ),
                           Positioned(
                             child: Icon(
@@ -259,14 +251,14 @@ class _HomeState extends State<Home> {
                           )
                         ],
                       )
-                    : Icon(Icons.shopping_cart, size: 28.0, color: inactive),
+                    : Icon(Icons.shopping_cart, size: 28.0, color: primaryColor),
               ),
               title: Text('')),
           BottomNavigationBarItem(
               backgroundColor: primaryColor,
               icon: Padding(
                 padding: const EdgeInsets.only(top: 12.0),
-                child: Icon(Icons.person, size: 30.0, color: inactive),
+                child: Icon(Icons.person, size: 30.0, color: primaryColor),
               ),
               title: Text('')),
         ],
@@ -280,24 +272,20 @@ class _HomeState extends State<Home> {
               case 0:
                 _selectedItem = bottomIcons.home;
                 _screen = 0;
-                _searchSelected = false;
                 isScrollingDown = false;
                 break;
               case 1:
                 _selectedItem = bottomIcons.inventory;
                 _screen = 1;
-                _searchSelected = false;
                 isScrollingDown = false;
                 break;
               case 2:
                 _selectedItem = bottomIcons.products;
                 _screen = 2;
-                _searchSelected = false;
                 isScrollingDown = false;
                 break;
               case 3:
                 _scaffoldkey.currentState.openEndDrawer();
-                _searchSelected = true;
                 isScrollingDown = false;
                 break;
             }
@@ -322,7 +310,7 @@ class _HomeState extends State<Home> {
               accountName: Padding(
                 padding: const EdgeInsets.only(left: 5),
                 child: Text(
-                  "It's Me Bitch",
+                  "Bruce Wayne",
                   style: TextStyle(color: Colors.white, fontSize: 24),
                 ),
               ),
@@ -367,21 +355,18 @@ class _HomeState extends State<Home> {
               ),
             ),
             Divider(),
-
             InkWell(
               onTap: () {},
               child: ListTile(
                 title: Text("Help"),
-                leading:
-                    Icon(Icons.help, color: Colors.lightBlue),
+                leading: Icon(Icons.help, color: Colors.lightBlue),
               ),
             ),
             InkWell(
               onTap: () {},
               child: ListTile(
                 title: Text("Log out"),
-                leading:
-                Icon(Icons.transit_enterexit, color: Colors.grey),
+                leading: Icon(Icons.transit_enterexit, color: Colors.grey),
               ),
             )
           ],
