@@ -378,7 +378,7 @@ class _HomeState extends State<Home> {
 }
 
 List<Categories> categoriesList = [
-  Categories(image: 'Anti_Inflammatory.PNG', name: 'Anti-Inflamation'),
+  Categories(image: 'Anti_Inflammatory.PNG', name: 'Anti-Inflammation'),
   Categories(image: 'General_Multivitamins.PNG', name: 'Multivitamins'),
   Categories(image: 'Heart_health.PNG', name: 'Heart Health'),
   Categories(image: 'Calcium.PNG', name: 'Calcium'),
