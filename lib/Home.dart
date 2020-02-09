@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
-import 'package:carousel_pro/carousel_pro.dart';
+
 import 'package:uncle_sam_hf/main.dart';
 
 enum bottomIcons { products, home, inventory }
@@ -61,41 +61,6 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget imageCarousel() {
-    return Container(
-      height: 300,
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: Colors.black12,
-          offset: Offset(2, 6),
-          blurRadius: 10,
-        )
-      ]),
-      child: Padding(
-        padding: const EdgeInsets.only(
-            left: 8.0, right: 8.0, top: 0.0, bottom: 15.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(5.0),
-          child: Carousel(
-            boxFit: BoxFit.fill,
-            images: [
-              AssetImage("images/leading.jpg"),
-              AssetImage("images/image1.PNG"),
-              AssetImage("images/image2.PNG"),
-              AssetImage("images/image3.jpg")
-            ],
-            autoplay: true,
-            autoplayDuration: Duration(milliseconds: 4000),
-            animationCurve: Curves.fastOutSlowIn,
-            animationDuration: Duration(milliseconds: 1000),
-            dotSize: 4.0,
-            indicatorBgPadding: 4.0,
-            dotBgColor: Colors.transparent,
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget categoriesView() {
     return Container(
@@ -166,7 +131,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               categoriesView(),
-              imageCarousel(),
+
             ],
           ),
         );
