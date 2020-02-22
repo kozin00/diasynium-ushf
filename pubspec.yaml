@@ -53,6 +53,15 @@ flutter:
     - images/Calcium.PNG
     - images/General_Multivitamins.PNG
     - images/Heart_health.PNG
+    - images/Allerfree_60_Vegi_Caps.PNG
+    - images/Country_Life_Acid_Rescue_Mint_Flavor_60_chewable.PNG
+    - images/Country_Life_Daily_Total_One_Iron_free_60_vegan.PNG
+    - images/Country_Life_Activated_Charcoal.PNG
+    - images/Ionic_Fizz_Magnesium_Plus.PNG
+    - images/Ionic_Fizz_Super_D_K_Calcium_Plus.PNG
+    - images/New_Chapter_Perfect_Energy_Multi_72_Veg_capsules.PNG
+    - images/One_n_Only.PNG
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

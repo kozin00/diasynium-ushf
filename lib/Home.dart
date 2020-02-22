@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-
-
+import 'package:flutter/cupertino.dart';
 import 'package:uncle_sam_hf/main.dart';
 
 enum bottomIcons { products, home, inventory }
@@ -18,6 +17,7 @@ class _HomeState extends State<Home> {
   var current = 0;
   bool isScrollingDown = false;
   bottomIcons _selectedItem = bottomIcons.home;
+
   //Color active= Color(0xFF20BF55);
   Color primaryColor = Colors.white;
   Color mainTheme = Color(0xFF011627);
@@ -61,7 +61,6 @@ class _HomeState extends State<Home> {
     );
   }
 
-
   Widget categoriesView() {
     return Container(
       height: 75,
@@ -100,6 +99,108 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Widget showProducts(Products product, double size1, double size2) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black12, offset: Offset(3, 8), blurRadius: 15)
+              ]),
+          child: Column(
+            children: <Widget>[
+              Stack(children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Container(
+                    width: double.infinity,
+                    height: size1,
+                    child: Image.asset(
+                      'images/${product.image}',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: SmallButton(Icons.favorite_border),
+                ),
+              ]),
+              SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5.0),
+                      child: SizedBox(
+                        width: 145,
+                        child: Text(
+                          '${product.name}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Text(
+                        "\$${product.price}",
+                        style: TextStyle(color: Colors.black87, fontSize: 14),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget PopularProducts() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+      child: SizedBox(
+        height: 260,
+
+        child: Row(
+          children: <Widget>[
+            //First Product
+            SizedBox(
+              width: 220,
+              child: showProducts(popularProducts[0], 180, 210),
+            ),
+            //Second and Third
+            Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 130,
+                  width: 191,
+                  child: showProducts(popularProducts[1], 50, 110)
+                ),
+
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget body() {
     switch (_screen) {
       case 0:
@@ -114,7 +215,7 @@ class _HomeState extends State<Home> {
                     Text(
                       "Categories",
                       style: TextStyle(
-                          color: mainTheme,//Color(0xFF114B5F),
+                          color: mainTheme, //Color(0xFF114B5F),
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
                     ),
@@ -131,7 +232,21 @@ class _HomeState extends State<Home> {
                 ),
               ),
               categoriesView(),
-
+              Padding(
+                padding: const EdgeInsets.only(right: 260, left: 15.0),
+                child: Container(
+                  color: mainTheme,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+                    child: Text(
+                      "Popular Products",
+                      style: TextStyle(color: Colors.white, fontSize: 18.0),
+                    ),
+                  ),
+                ),
+              ),
+              PopularProducts(),
             ],
           ),
         );
@@ -178,7 +293,8 @@ class _HomeState extends State<Home> {
                 child: _selectedItem == bottomIcons.inventory
                     ? Stack(
                         children: <Widget>[
-                          Icon(Icons.view_stream, size: 30.0, color: primaryColor),
+                          Icon(Icons.view_stream,
+                              size: 30.0, color: primaryColor),
                           Positioned(
                             child: Icon(
                               Icons.fiber_manual_record,
@@ -216,7 +332,8 @@ class _HomeState extends State<Home> {
                           )
                         ],
                       )
-                    : Icon(Icons.shopping_cart, size: 28.0, color: primaryColor),
+                    : Icon(Icons.shopping_cart,
+                        size: 28.0, color: primaryColor),
               ),
               title: Text('')),
           BottomNavigationBarItem(
@@ -350,9 +467,57 @@ List<Categories> categoriesList = [
   Categories(image: 'VitaminC.PNG', name: 'Vitamin C')
 ];
 
+List<Products> popularProducts = [
+  Products(
+      image: 'Country_Life_Activated_Charcoal.PNG',
+      name: 'Country Life - Activated Charcoal',
+      price: 200),
+  Products(
+      image: 'Country_Life_Acid_Rescue_Mint_Flavor_60_chewable.PNG',
+      name: 'Country Life - Acid Rescue Mint Flavor - 60 chewable',
+      price: 120),
+  Products(
+      image: 'New_Chapter_Perfect_Energy_Multi_72_Veg_capsules.PNG',
+      name: 'New Chapter - Perfect Energy - Multi 72 Veg Capsules',
+      price: 280)
+];
+
 class Categories {
   final String image;
   final String name;
 
   Categories({this.image, this.name});
+}
+
+class Products {
+  final String image;
+  final String name;
+  final double price;
+
+  Products({this.name, this.image, this.price});
+}
+
+Widget SmallButton(IconData icon) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: InkWell(
+      onTap: () {},
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(500),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey[200], offset: Offset(1, 1), blurRadius: 2)
+            ]),
+        child: Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: Icon(
+              icon,
+              color: Colors.black,
+              size: 15,
+            )),
+      ),
+    ),
+  );
 }
