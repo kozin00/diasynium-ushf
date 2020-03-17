@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uncle_sam_hf/main.dart';
+import 'package:uncle_sam_hf/product_details.dart';
 
 enum bottomIcons { products, home, inventory }
 
@@ -83,7 +84,7 @@ class _HomeState extends State<Home> {
                           child: Text(
                             "${categoriesList[index].name}",
                             style:
-                                TextStyle(color: Colors.white, fontSize: 15.0),
+                            TextStyle(color: Colors.white, fontSize: 15.0),
                           ),
                         ),
                       ),
@@ -99,103 +100,110 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget showProducts(Products product, double size1, double size2) {
+  Widget showProducts(product) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: () {},
-        child: Container(
-
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black12, offset: Offset(3, 8), blurRadius: 15)
-              ]),
-          child: Column(
-            children: <Widget>[
-              Stack(children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Container(
-                    width: double.infinity,
-                    height: size1,
-                    child: Image.asset(
-                      'images/${product.image}',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: SmallButton(Icons.favorite_border),
-                ),
-              ]),
-              SizedBox(
-                height: 5,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: const EdgeInsets.only(left: 9),
+      child: Container(
+        height: 260,
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: product.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Stack(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5.0),
-                      child: SizedBox(
-                        width: 145,
-                        child: Text(
-                          '${product.name}',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(
+                            builder: (context) =>
+                                ProductDetails(name: product[index].name,
+                                    image: product[index].image)
+                        ));
+                      },
+                      child: Container(
+                        width: 200,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(3, 8),
+                                  blurRadius: 15)
+                            ]),
+                        child: Column(
+                          children: <Widget>[
+                            Stack(children: <Widget>[
+                              Container(
+                                width: double.infinity,
+                                height: 150,
+                                child: Image.asset(
+                                  "images/${product[index].image}",
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: SmallButton(Icons.favorite_border),
+                              ),
+                            ]),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Padding(
+                                        padding:
+                                        const EdgeInsets.only(left: 8.0),
+                                        child: Text(
+                                          '${product[index].name}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                          ),
+                                        )),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                      "\$${product[index].price}",
+                                      style: TextStyle(
+                                          color: Colors.black87, fontSize: 14),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Text(
-                        "\$${product.price}",
-                        style: TextStyle(color: Colors.black87, fontSize: 14),
                       ),
                     )
                   ],
                 ),
-              ),
-            ],
-          ),
-        ),
+              );
+            }),
       ),
     );
   }
 
-  Widget PopularProducts() {
+  Widget banner(String text) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-      child: SizedBox(
-        height: 260,
-
-        child: Row(
-          children: <Widget>[
-            //First Product
-            SizedBox(
-              width: 220,
-              child: showProducts(popularProducts[0], 180, 210),
-            ),
-            //Second and Third
-            Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 130,
-                  width: 191,
-                  child: showProducts(popularProducts[1], 50, 110)
-                ),
-
-              ],
-            )
-          ],
+      padding: const EdgeInsets.only(right: 260, left: 15.0),
+      child: Container(
+        color: mainTheme,
+        child: Padding(
+          padding: const EdgeInsets.only(
+              left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
+          child: Text(
+            text,
+            style: TextStyle(color: Colors.white, fontSize: 18.0),
+          ),
         ),
       ),
     );
@@ -232,21 +240,73 @@ class _HomeState extends State<Home> {
                 ),
               ),
               categoriesView(),
+              banner("Popular Products"),
+              showProducts(popularProducts),
+              SizedBox(
+                height: 5.0,
+              ),
+              banner("New Products"),
+              showProducts(newProducts),
+              SizedBox(
+                height: 5.0,
+              ),
+              banner("Featured"),
               Padding(
-                padding: const EdgeInsets.only(right: 260, left: 15.0),
-                child: Container(
-                  color: mainTheme,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-                    child: Text(
-                      "Popular Products",
-                      style: TextStyle(color: Colors.white, fontSize: 18.0),
+                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    width: 200,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black12,
+                              offset: Offset(3, 8),
+                              blurRadius: 15)
+                        ]),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          width: double.infinity,
+                          height: 200,
+                          child: Image.asset(
+                            "images/${categoriesList[0].image}",
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Container(
+                            color: mainTheme,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
+                            child: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  '${categoriesList[0].name}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-              PopularProducts(),
+              )
             ],
           ),
         );
@@ -257,6 +317,7 @@ class _HomeState extends State<Home> {
         return null;
         break;
     }
+    return Container();
   }
 
   Widget navigationBar() {
@@ -270,19 +331,19 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 12.0),
                 child: _selectedItem == bottomIcons.home
                     ? Stack(
-                        children: <Widget>[
-                          Icon(Icons.home, size: 30.0, color: primaryColor),
-                          Positioned(
-                            child: Icon(
-                              Icons.fiber_manual_record,
-                              color: Colors.lightGreen[800],
-                              size: 16,
-                            ),
-                            top: 16,
-                            left: 16,
-                          )
-                        ],
-                      )
+                  children: <Widget>[
+                    Icon(Icons.home, size: 30.0, color: primaryColor),
+                    Positioned(
+                      child: Icon(
+                        Icons.fiber_manual_record,
+                        color: Colors.lightGreen[800],
+                        size: 16,
+                      ),
+                      top: 16,
+                      left: 16,
+                    )
+                  ],
+                )
                     : Icon(Icons.home, size: 30.0, color: primaryColor),
               ),
               title: Text('')),
@@ -292,20 +353,20 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 12.0),
                 child: _selectedItem == bottomIcons.inventory
                     ? Stack(
-                        children: <Widget>[
-                          Icon(Icons.view_stream,
-                              size: 30.0, color: primaryColor),
-                          Positioned(
-                            child: Icon(
-                              Icons.fiber_manual_record,
-                              color: Colors.lightGreen[800],
-                              size: 16,
-                            ),
-                            top: 16,
-                            left: 16,
-                          )
-                        ],
-                      )
+                  children: <Widget>[
+                    Icon(Icons.view_stream,
+                        size: 30.0, color: primaryColor),
+                    Positioned(
+                      child: Icon(
+                        Icons.fiber_manual_record,
+                        color: Colors.lightGreen[800],
+                        size: 16,
+                      ),
+                      top: 16,
+                      left: 16,
+                    )
+                  ],
+                )
                     : Icon(Icons.view_stream, size: 30.0, color: primaryColor),
               ),
               title: Text('')),
@@ -315,25 +376,25 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 12.0),
                 child: _selectedItem == bottomIcons.products
                     ? Stack(
-                        children: <Widget>[
-                          Icon(
-                            Icons.shopping_cart,
-                            size: 28.0,
-                            color: primaryColor,
-                          ),
-                          Positioned(
-                            child: Icon(
-                              Icons.fiber_manual_record,
-                              color: Colors.lightGreen[800],
-                              size: 16,
-                            ),
-                            top: 16,
-                            left: 16,
-                          )
-                        ],
-                      )
+                  children: <Widget>[
+                    Icon(
+                      Icons.shopping_cart,
+                      size: 28.0,
+                      color: primaryColor,
+                    ),
+                    Positioned(
+                      child: Icon(
+                        Icons.fiber_manual_record,
+                        color: Colors.lightGreen[800],
+                        size: 16,
+                      ),
+                      top: 16,
+                      left: 16,
+                    )
+                  ],
+                )
                     : Icon(Icons.shopping_cart,
-                        size: 28.0, color: primaryColor),
+                    size: 28.0, color: primaryColor),
               ),
               title: Text('')),
           BottomNavigationBarItem(
@@ -471,30 +532,47 @@ List<Products> popularProducts = [
   Products(
       image: 'Country_Life_Activated_Charcoal.PNG',
       name: 'Country Life - Activated Charcoal',
-      price: 200),
+      price: 199.99),
   Products(
       image: 'Country_Life_Acid_Rescue_Mint_Flavor_60_chewable.PNG',
       name: 'Country Life - Acid Rescue Mint Flavor - 60 chewable',
-      price: 120),
+      price: 200.99),
   Products(
       image: 'New_Chapter_Perfect_Energy_Multi_72_Veg_capsules.PNG',
       name: 'New Chapter - Perfect Energy - Multi 72 Veg Capsules',
-      price: 280)
+      price: 280.99)
+];
+
+List<Products> newProducts = [
+  Products(
+      image: 'Ionic_Fizz_Magnesium_Plus.PNG',
+      name: 'Ionic Fizz Magnesium Plus',
+      price: 20.99),
+  Products(
+      image: 'Allerfree_60_Vegi_Caps.PNG',
+      name: 'Allerfree 60 Vegi Caps',
+      price: 10.99),
+  Products(
+      image: 'Country_Life_Daily_Total_One_Iron_free_60_vegan.PNG',
+      name: 'Country Life Daily Total One Iron Free 60 Vegan',
+      price: 11.99)
 ];
 
 class Categories {
   final String image;
   final String name;
+  final int orders;
 
-  Categories({this.image, this.name});
+  Categories({this.image, this.name, this.orders});
 }
 
 class Products {
   final String image;
   final String name;
   final double price;
+  final int orders;
 
-  Products({this.name, this.image, this.price});
+  Products({this.name, this.image, this.price, this.orders});
 }
 
 Widget SmallButton(IconData icon) {
