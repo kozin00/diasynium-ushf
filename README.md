@@ -1,4 +1,4 @@
-# uncle_sam's_hf
+# Diasynium (USHF)
 A mobile app for Downtown Troy business, Uncle Sam's Health Foods.
 
 # Set up
