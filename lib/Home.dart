@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:uncle_sam_hf/category_details.dart';
 import 'package:uncle_sam_hf/main.dart';
 import 'package:uncle_sam_hf/product_details.dart';
 
@@ -84,7 +85,7 @@ class _HomeState extends State<Home> {
                           child: Text(
                             "${categoriesList[index].name}",
                             style:
-                            TextStyle(color: Colors.white, fontSize: 15.0),
+                                TextStyle(color: Colors.white, fontSize: 15.0),
                           ),
                         ),
                       ),
@@ -115,11 +116,12 @@ class _HomeState extends State<Home> {
                   children: <Widget>[
                     InkWell(
                       onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(
-                            builder: (context) =>
-                                ProductDetails(name: product[index].name,
-                                    image: product[index].image)
-                        ));
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => ProductDetails(
+                                    name: product[index].name,
+                                    image: product[index].image)));
                       },
                       child: Container(
                         width: 200,
@@ -155,12 +157,12 @@ class _HomeState extends State<Home> {
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Expanded(
                                     child: Padding(
                                         padding:
-                                        const EdgeInsets.only(left: 8.0),
+                                            const EdgeInsets.only(left: 8.0),
                                         child: Text(
                                           '${product[index].name}',
                                           style: TextStyle(
@@ -283,10 +285,7 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Container(
                             color: mainTheme,
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width,
+                            width: MediaQuery.of(context).size.width,
                             child: Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
@@ -312,6 +311,46 @@ class _HomeState extends State<Home> {
         );
         break;
       case 1:
+        return ListView.builder(
+            itemCount: categoriesListString.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return Container(
+                  height: 60,
+                  color: mainTheme,
+                  child: Center(
+                    child: Text(
+                      "Categories",
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                  ),
+                );
+              } else {
+                return Material(
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.white)),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context){
+                        return CategoryDetails(name: categoriesListString[index - 1]);
+                      }));
+                    },
+                    child: ListTile(
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                        child: Text(
+                          categoriesListString[index - 1],
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.navigate_next,
+                      ),
+                    ),
+                  ),
+                );
+              }
+            });
         break;
       case 2:
         return null;
@@ -331,19 +370,19 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 12.0),
                 child: _selectedItem == bottomIcons.home
                     ? Stack(
-                  children: <Widget>[
-                    Icon(Icons.home, size: 30.0, color: primaryColor),
-                    Positioned(
-                      child: Icon(
-                        Icons.fiber_manual_record,
-                        color: Colors.lightGreen[800],
-                        size: 16,
-                      ),
-                      top: 16,
-                      left: 16,
-                    )
-                  ],
-                )
+                        children: <Widget>[
+                          Icon(Icons.home, size: 30.0, color: primaryColor),
+                          Positioned(
+                            child: Icon(
+                              Icons.fiber_manual_record,
+                              color: Colors.lightGreen[800],
+                              size: 16,
+                            ),
+                            top: 16,
+                            left: 16,
+                          )
+                        ],
+                      )
                     : Icon(Icons.home, size: 30.0, color: primaryColor),
               ),
               title: Text('')),
@@ -353,20 +392,20 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 12.0),
                 child: _selectedItem == bottomIcons.inventory
                     ? Stack(
-                  children: <Widget>[
-                    Icon(Icons.view_stream,
-                        size: 30.0, color: primaryColor),
-                    Positioned(
-                      child: Icon(
-                        Icons.fiber_manual_record,
-                        color: Colors.lightGreen[800],
-                        size: 16,
-                      ),
-                      top: 16,
-                      left: 16,
-                    )
-                  ],
-                )
+                        children: <Widget>[
+                          Icon(Icons.view_stream,
+                              size: 30.0, color: primaryColor),
+                          Positioned(
+                            child: Icon(
+                              Icons.fiber_manual_record,
+                              color: Colors.lightGreen[800],
+                              size: 16,
+                            ),
+                            top: 16,
+                            left: 16,
+                          )
+                        ],
+                      )
                     : Icon(Icons.view_stream, size: 30.0, color: primaryColor),
               ),
               title: Text('')),
@@ -376,25 +415,25 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 12.0),
                 child: _selectedItem == bottomIcons.products
                     ? Stack(
-                  children: <Widget>[
-                    Icon(
-                      Icons.shopping_cart,
-                      size: 28.0,
-                      color: primaryColor,
-                    ),
-                    Positioned(
-                      child: Icon(
-                        Icons.fiber_manual_record,
-                        color: Colors.lightGreen[800],
-                        size: 16,
-                      ),
-                      top: 16,
-                      left: 16,
-                    )
-                  ],
-                )
+                        children: <Widget>[
+                          Icon(
+                            Icons.shopping_cart,
+                            size: 28.0,
+                            color: primaryColor,
+                          ),
+                          Positioned(
+                            child: Icon(
+                              Icons.fiber_manual_record,
+                              color: Colors.lightGreen[800],
+                              size: 16,
+                            ),
+                            top: 16,
+                            left: 16,
+                          )
+                        ],
+                      )
                     : Icon(Icons.shopping_cart,
-                    size: 28.0, color: primaryColor),
+                        size: 28.0, color: primaryColor),
               ),
               title: Text('')),
           BottomNavigationBarItem(
@@ -437,6 +476,7 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -528,6 +568,24 @@ List<Categories> categoriesList = [
   Categories(image: 'VitaminC.PNG', name: 'Vitamin C')
 ];
 
+List<String> categoriesListString = [
+  'Anti-Inflammation',
+  'Multivitamins',
+  'Heart Health',
+  'Calcium',
+  'Vitamin C',
+  'Anti-Inflammation',
+  'Multivitamins',
+  'Heart Health',
+  'Calcium',
+  'Vitamin C',
+  'Anti-Inflammation',
+  'Multivitamins',
+  'Heart Health',
+  'Calcium',
+  'Vitamin C',
+];
+
 List<Products> popularProducts = [
   Products(
       image: 'Country_Life_Activated_Charcoal.PNG',
@@ -558,14 +616,6 @@ List<Products> newProducts = [
       price: 11.99)
 ];
 
-class Categories {
-  final String image;
-  final String name;
-  final int orders;
-
-  Categories({this.image, this.name, this.orders});
-}
-
 class Products {
   final String image;
   final String name;
@@ -574,6 +624,15 @@ class Products {
 
   Products({this.name, this.image, this.price, this.orders});
 }
+
+class Categories {
+  final String image;
+  final String name;
+  final int orders;
+
+  Categories({this.image, this.name, this.orders});
+}
+
 
 Widget SmallButton(IconData icon) {
   return Padding(
