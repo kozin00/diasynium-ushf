@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:uncle_sam_hf/category_details.dart';
+import 'package:uncle_sam_hf/products.dart';
 import 'package:uncle_sam_hf/main.dart';
 import 'package:uncle_sam_hf/product_details.dart';
 
@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey();
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
   var current = 0;
   bool isScrollingDown = false;
@@ -150,36 +150,41 @@ class _HomeState extends State<Home> {
                                 child: SmallButton(Icons.favorite_border),
                               ),
                             ]),
-                            SizedBox(
-                              height: 5,
+                            Divider(
+                              color: Colors.black12,
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Padding(
+                              padding: const EdgeInsets.only(top: 0.0),
+                              child: Container(
+                                height: 72,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Padding(
                                         padding:
                                             const EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          '${product[index].name}',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
+                                        child: Container(
+                                          width: 105,
+                                          child: Text(
+                                            '${product[index].name}',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                            ),
                                           ),
                                         )),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      "\$${product[index].price}",
-                                      style: TextStyle(
-                                          color: Colors.black87, fontSize: 14),
-                                    ),
-                                  )
-                                ],
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "\$${product[index].price}",
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 14),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -211,152 +216,147 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget body() {
-    switch (_screen) {
-      case 0:
-        return Container(
-          child: ListView(
-            children: <Widget>[
-              searchBar(),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0, top: 15.0),
-                child: Row(
+  Widget homePage() {
+    return Container(
+      child: ListView(
+        children: <Widget>[
+          searchBar(),
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0, top: 15.0),
+            child: Row(
+              children: <Widget>[
+                Text(
+                  "Categories",
+                  style: TextStyle(
+                      color: mainTheme, //Color(0xFF114B5F),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: 270,
+                ),
+                InkWell(
+                  child: IconButton(
+                      onPressed: () {},
+                      icon:
+                          Icon(Icons.more_horiz, color: Colors.redAccent[700])),
+                )
+              ],
+            ),
+          ),
+          categoriesView(),
+          banner("Popular Products"),
+          showProducts(popularProducts),
+          SizedBox(
+            height: 5.0,
+          ),
+          banner("New Products"),
+          showProducts(newProducts),
+          SizedBox(
+            height: 5.0,
+          ),
+          banner("Featured"),
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            child: InkWell(
+              onTap: () {},
+              child: Container(
+                width: 200,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(3, 8),
+                          blurRadius: 15)
+                    ]),
+                child: Column(
                   children: <Widget>[
-                    Text(
-                      "Categories",
-                      style: TextStyle(
-                          color: mainTheme, //Color(0xFF114B5F),
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
+                    Container(
+                      width: double.infinity,
+                      height: 200,
+                      child: Image.asset(
+                        "images/${categoriesList[0].image}",
+                        fit: BoxFit.fill,
+                      ),
                     ),
                     SizedBox(
-                      width: 270,
+                      height: 5,
                     ),
-                    InkWell(
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.more_horiz,
-                              color: Colors.redAccent[700])),
-                    )
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Container(
+                        color: mainTheme,
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              '${categoriesList[0].name}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
                   ],
                 ),
               ),
-              categoriesView(),
-              banner("Popular Products"),
-              showProducts(popularProducts),
-              SizedBox(
-                height: 5.0,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget categoriesPage() {
+    return ListView.builder(
+        itemCount: categoriesListString.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Container(
+              height: 60,
+              color: mainTheme,
+              child: Center(
+                child: Text(
+                  "Categories",
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
               ),
-              banner("New Products"),
-              showProducts(newProducts),
-              SizedBox(
-                height: 5.0,
-              ),
-              banner("Featured"),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Container(
-                    width: 200,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(3, 8),
-                              blurRadius: 15)
-                        ]),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          width: double.infinity,
-                          height: 200,
-                          child: Image.asset(
-                            "images/${categoriesList[0].image}",
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Container(
-                            color: mainTheme,
-                            width: MediaQuery.of(context).size.width,
-                            child: Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  '${categoriesList[0].name}',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                      ],
+            );
+          } else {
+            return Material(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.black12)),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      CupertinoPageRoute(builder: (context) {
+                    return Products(name: categoriesListString[index - 1]);
+                  }));
+                },
+                child: ListTile(
+                  title: Padding(
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                    child: Text(
+                      categoriesListString[index - 1],
+                      style: TextStyle(fontSize: 20),
                     ),
+                  ),
+                  trailing: Icon(
+                    Icons.navigate_next,
                   ),
                 ),
-              )
-            ],
-          ),
-        );
-        break;
-      case 1:
-        return ListView.builder(
-            itemCount: categoriesListString.length + 1,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return Container(
-                  height: 60,
-                  color: mainTheme,
-                  child: Center(
-                    child: Text(
-                      "Categories",
-                      style: TextStyle(color: Colors.white, fontSize: 24),
-                    ),
-                  ),
-                );
-              } else {
-                return Material(
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.white)),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context){
-                        return CategoryDetails(name: categoriesListString[index - 1]);
-                      }));
-                    },
-                    child: ListTile(
-                      title: Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-                        child: Text(
-                          categoriesListString[index - 1],
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      trailing: Icon(
-                        Icons.navigate_next,
-                      ),
-                    ),
-                  ),
-                );
-              }
-            });
-        break;
-      case 2:
-        return null;
-        break;
-    }
-    return Container();
+              ),
+            );
+          }
+        });
   }
 
   Widget navigationBar() {
@@ -467,7 +467,7 @@ class _HomeState extends State<Home> {
                 isScrollingDown = false;
                 break;
               case 3:
-                _scaffoldkey.currentState.openEndDrawer();
+                _scaffoldKey.currentState.openEndDrawer();
                 isScrollingDown = false;
                 break;
             }
@@ -477,13 +477,27 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Widget body() {
+    switch (_screen) {
+      case 0:
+        return homePage();
+        break;
+      case 1:
+        return categoriesPage();
+        break;
+      case 2:
+        return null;
+        break;
+    }
+    return Container();
+  }
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
       backgroundColor: primaryColor,
-      key: _scaffoldkey,
+      key: _scaffoldKey,
       resizeToAvoidBottomPadding: false,
       body: body(),
       endDrawer: Drawer(
@@ -573,56 +587,45 @@ List<String> categoriesListString = [
   'Multivitamins',
   'Heart Health',
   'Calcium',
-  'Vitamin C',
-  'Anti-Inflammation',
-  'Multivitamins',
-  'Heart Health',
-  'Calcium',
-  'Vitamin C',
-  'Anti-Inflammation',
-  'Multivitamins',
-  'Heart Health',
-  'Calcium',
-  'Vitamin C',
 ];
 
-List<Products> popularProducts = [
-  Products(
+List<ProductsClass> popularProducts = [
+  ProductsClass(
       image: 'Country_Life_Activated_Charcoal.PNG',
       name: 'Country Life - Activated Charcoal',
       price: 199.99),
-  Products(
+  ProductsClass(
       image: 'Country_Life_Acid_Rescue_Mint_Flavor_60_chewable.PNG',
       name: 'Country Life - Acid Rescue Mint Flavor - 60 chewable',
       price: 200.99),
-  Products(
+  ProductsClass(
       image: 'New_Chapter_Perfect_Energy_Multi_72_Veg_capsules.PNG',
       name: 'New Chapter - Perfect Energy - Multi 72 Veg Capsules',
       price: 280.99)
 ];
 
-List<Products> newProducts = [
-  Products(
+List<ProductsClass> newProducts = [
+  ProductsClass(
       image: 'Ionic_Fizz_Magnesium_Plus.PNG',
       name: 'Ionic Fizz Magnesium Plus',
       price: 20.99),
-  Products(
+  ProductsClass(
       image: 'Allerfree_60_Vegi_Caps.PNG',
       name: 'Allerfree 60 Vegi Caps',
       price: 10.99),
-  Products(
+  ProductsClass(
       image: 'Country_Life_Daily_Total_One_Iron_free_60_vegan.PNG',
       name: 'Country Life Daily Total One Iron Free 60 Vegan',
       price: 11.99)
 ];
 
-class Products {
+class ProductsClass {
   final String image;
   final String name;
   final double price;
   final int orders;
 
-  Products({this.name, this.image, this.price, this.orders});
+  ProductsClass({this.name, this.image, this.price, this.orders});
 }
 
 class Categories {
@@ -632,7 +635,6 @@ class Categories {
 
   Categories({this.image, this.name, this.orders});
 }
-
 
 Widget SmallButton(IconData icon) {
   return Padding(

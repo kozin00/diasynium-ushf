@@ -240,7 +240,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               onPressed: () {
                                 Navigator.push(context,
                                     CupertinoPageRoute(builder: (context) {
-                                  return Products();
+                                    return Products(name: "Calcium",);
                                 }));
                               },
                             ),
