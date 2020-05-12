@@ -1,13 +1,20 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/widgets.dart';
+import 'package:uncle_sam_hf/db/database_operations.dart';
 import 'package:uncle_sam_hf/products.dart';
+
+import 'package:firebase_database/firebase_database.dart';
 
 class ProductDetails extends StatefulWidget {
   final String name;
   final String image;
+  String prodId;
+  String userId;
 
   ProductDetails({this.name, this.image});
 
@@ -25,12 +32,15 @@ class _ProductDetailsState extends State<ProductDetails> {
   int count = 0;
   String groupValue;
   Map<String, bool> optionsValues = {};
+  HashMap favourites;
+
+  DatabaseOperations dbOperation = new DatabaseOperations();
 
   @override
   void initState() {
     super.initState();
     myScroll();
-  groupValue = optionsList[0] ?? '';
+    groupValue = optionsList[0] ?? '';
   }
 
   @override
@@ -224,6 +234,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 setState(() {
                                   _favouriteIcon = !_favouriteIcon;
                                 });
+                                if (_favouriteIcon) {
+                                  var newMap={widget.prodId : widget.name};
+
+                                  favourites.addAll(newMap);
+                                } else {
+                                  favourites.remove(widget.prodId);
+                                }
                               },
                             ),
                             Container(
@@ -240,7 +257,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                               onPressed: () {
                                 Navigator.push(context,
                                     CupertinoPageRoute(builder: (context) {
-                                    return Products(name: "Calcium",);
+                                  return Products(
+                                    name: "Calcium",
+                                  );
                                 }));
                               },
                             ),
@@ -275,24 +294,26 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ),
         ),
-        (optionsList.length != 0) ? Column(
-          children: <Widget>[
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    "Options",
-                    style: TextStyle(fontSize: 20.0),
+        (optionsList.length != 0)
+            ? Column(
+                children: <Widget>[
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          "Options",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      )),
+                  Divider(color: Colors.black12),
+                  Column(
+                    children: _buildExpandableContentO(optionsList),
                   ),
-                )),
-            Divider(color: Colors.black12),
-            Column(
-              children: _buildExpandableContentO(optionsList),
-            ),
-            Divider(color: Colors.black12),
-          ],
-        ) : Container(),
+                  Divider(color: Colors.black12),
+                ],
+              )
+            : Container(),
         Column(
           children: <Widget>[
             SizedBox(
@@ -384,7 +405,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                             "Add To Cart",
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            //dbOperation.updateFavourites(favourites, widget.userId);
+                          },
                         ),
                       ),
                     ),

@@ -3,9 +3,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uncle_sam_hf/products.dart';
-import 'package:uncle_sam_hf/main.dart';
+import 'package:uncle_sam_hf/Login.dart';
 import 'package:uncle_sam_hf/product_details.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:uncle_sam_hf/shopping_cart.dart';
 enum bottomIcons { products, home, inventory }
 
 class Home extends StatefulWidget {
@@ -15,16 +18,43 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-
   var current = 0;
   bool isScrollingDown = false;
-  bottomIcons _selectedItem = bottomIcons.home;
 
-  //Color active= Color(0xFF20BF55);
+  bottomIcons _selectedItem = bottomIcons.home;
   Color primaryColor = Colors.white;
   Color mainTheme = Color(0xFF011627);
 
   int _screen = 0;
+  SharedPreferences prefs;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  String displayName = '';
+  String id = '';
+  String displayPhoto = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getPrefs();
+  }
+
+  void getPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    displayName = prefs.getString('nickname') ?? '';
+    id = prefs.getString('id') ?? '';
+    displayPhoto = prefs.getString('photoUrl') ?? '';
+  }
+
+  void signOut() async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    googleSignIn.signOut();
+
+    Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) {
+      return Login();
+    }));
+    Fluttertoast.showToast(msg: 'Signed Out Successfully');
+  }
 
   Widget searchBar() {
     return Padding(
@@ -145,10 +175,7 @@ class _HomeState extends State<Home> {
                                   fit: BoxFit.fill,
                                 ),
                               ),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: SmallButton(Icons.favorite_border),
-                              ),
+
                             ]),
                             Divider(
                               color: Colors.black12,
@@ -486,7 +513,7 @@ class _HomeState extends State<Home> {
         return categoriesPage();
         break;
       case 2:
-        return null;
+        return shoppingCart();
         break;
     }
     return Container();
@@ -507,7 +534,7 @@ class _HomeState extends State<Home> {
               accountName: Padding(
                 padding: const EdgeInsets.only(left: 5),
                 child: Text(
-                  "Bruce Wayne",
+                  displayName,
                   style: TextStyle(color: Colors.white, fontSize: 24),
                 ),
               ),
@@ -515,6 +542,7 @@ class _HomeState extends State<Home> {
                 onTap: () {},
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
+                  backgroundImage: NetworkImage(displayPhoto),
                   child: Container(
                     color: Colors.transparent,
                   ),
@@ -560,7 +588,9 @@ class _HomeState extends State<Home> {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                signOut();
+              },
               child: ListTile(
                 title: Text("Log out"),
                 leading: Icon(Icons.transit_enterexit, color: Colors.grey),
@@ -636,27 +666,3 @@ class Categories {
   Categories({this.image, this.name, this.orders});
 }
 
-Widget SmallButton(IconData icon) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: InkWell(
-      onTap: () {},
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(500),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey[200], offset: Offset(1, 1), blurRadius: 2)
-            ]),
-        child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Icon(
-              icon,
-              color: Colors.black,
-              size: 15,
-            )),
-      ),
-    ),
-  );
-}
