@@ -9,6 +9,7 @@ import 'package:uncle_sam_hf/db/database_operations.dart';
 import 'package:uncle_sam_hf/products.dart';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:uncle_sam_hf/shopping_cart.dart';
 
 class ProductDetails extends StatefulWidget {
   final String name;
@@ -32,7 +33,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   int count = 0;
   String groupValue;
   Map<String, bool> optionsValues = {};
-  HashMap favourites;
+  HashMap favourites=new HashMap();
 
   DatabaseOperations dbOperation = new DatabaseOperations();
 
@@ -113,6 +114,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                     backgroundColor: mainTheme,
                     actions: <Widget>[
                       IconButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(context,
+                              CupertinoPageRoute(builder: (context) {
+                            return ShoppingCart();
+                          }));
+                        },
                         icon: Icon(Icons.shopping_cart,
                             color: (_isAppBarNotExpanded)
                                 ? Colors.white
@@ -235,7 +242,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   _favouriteIcon = !_favouriteIcon;
                                 });
                                 if (_favouriteIcon) {
-                                  var newMap={widget.prodId : widget.name};
+                                  var newMap = {widget.prodId: widget.name};
 
                                   favourites.addAll(newMap);
                                 } else {
@@ -407,6 +414,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                           onPressed: () {
                             //dbOperation.updateFavourites(favourites, widget.userId);
+                            //update shoppingCartList
                           },
                         ),
                       ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:uncle_sam_hf/favourites.dart';
+import 'package:uncle_sam_hf/orders.dart';
 import 'package:uncle_sam_hf/products.dart';
 import 'package:uncle_sam_hf/Login.dart';
 import 'package:uncle_sam_hf/product_details.dart';
@@ -9,6 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uncle_sam_hf/shopping_cart.dart';
+
+import 'confirmOrder.dart';
+
 enum bottomIcons { products, home, inventory }
 
 class Home extends StatefulWidget {
@@ -175,7 +180,6 @@ class _HomeState extends State<Home> {
                                   fit: BoxFit.fill,
                                 ),
                               ),
-
                             ]),
                             Divider(
                               color: Colors.black12,
@@ -357,30 +361,39 @@ class _HomeState extends State<Home> {
               ),
             );
           } else {
-            return Material(
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.black12)),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      CupertinoPageRoute(builder: (context) {
-                    return Products(name: categoriesListString[index - 1]);
-                  }));
-                },
-                child: ListTile(
-                  title: Padding(
-                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-                    child: Text(
-                      categoriesListString[index - 1],
-                      style: TextStyle(fontSize: 20),
+            return Column(
+              children: <Widget>[
+                (index > 1)
+                    ? Divider(
+                        color: Colors.black12,
+                      )
+                    : Container(),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        CupertinoPageRoute(builder: (context) {
+                      return Products(name: categoriesListString[index - 1]);
+                    }));
+                  },
+                  child: ListTile(
+                    title: Padding(
+                      padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                      child: Text(
+                        categoriesListString[index - 1],
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    trailing: Icon(
+                      Icons.navigate_next,
                     ),
                   ),
-                  trailing: Icon(
-                    Icons.navigate_next,
-                  ),
                 ),
-              ),
+                (index == categoriesListString.length)
+                    ? Divider(
+                        color: Colors.black12,
+                      )
+                    : Container(),
+              ],
             );
           }
         });
@@ -513,7 +526,7 @@ class _HomeState extends State<Home> {
         return categoriesPage();
         break;
       case 2:
-        return shoppingCart();
+        return ShoppingCart();
         break;
     }
     return Container();
@@ -551,19 +564,21 @@ class _HomeState extends State<Home> {
               decoration: BoxDecoration(color: mainTheme),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  return Favourites();
+                }));
+              },
               child: ListTile(
-                  title: Text("Account"),
-                  leading: Icon(Icons.person, color: mainTheme)),
-            ),
-            InkWell(
-              onTap: () {},
-              child: ListTile(
-                  title: Text("Favourites"),
+                  title: Text("Favorites"),
                   leading: Icon(Icons.favorite, color: Colors.red)),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  return Orders();
+                }));
+              },
               child: ListTile(
                 title: Text("Orders"),
                 leading: Icon(
@@ -573,11 +588,21 @@ class _HomeState extends State<Home> {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  return ShoppingCart();
+                }));
+              },
               child: ListTile(
                 title: Text("Shopping Cart"),
                 leading: Icon(Icons.shopping_cart, color: mainTheme),
               ),
+            ),
+            InkWell(
+              onTap: () {},
+              child: ListTile(
+                  title: Text("Delete Account"),
+                  leading: Icon(Icons.delete, color: mainTheme)),
             ),
             Divider(),
             InkWell(
@@ -665,4 +690,3 @@ class Categories {
 
   Categories({this.image, this.name, this.orders});
 }
-
