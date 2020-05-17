@@ -1,9 +1,9 @@
-import './Home.dart';
+import './Pages/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'Login.dart';
+import 'Pages/Login.dart';
 
 void main() => runApp(MyApp());
 

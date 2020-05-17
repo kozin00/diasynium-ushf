@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:uncle_sam_hf/favourites.dart';
-import 'package:uncle_sam_hf/orders.dart';
-import 'package:uncle_sam_hf/products.dart';
-import 'package:uncle_sam_hf/Login.dart';
-import 'package:uncle_sam_hf/product_details.dart';
+import 'package:uncle_sam_hf/Pages/favourites.dart';
+import 'package:uncle_sam_hf/Pages/orders.dart';
+import 'package:uncle_sam_hf/Pages/products.dart';
+import 'package:uncle_sam_hf/Pages/Login.dart';
+import 'package:uncle_sam_hf/Pages/product_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:uncle_sam_hf/shopping_cart.dart';
+import 'package:uncle_sam_hf/Pages/shopping_cart.dart';
 
-import 'confirmOrder.dart';
+
 
 enum bottomIcons { products, home, inventory }
 

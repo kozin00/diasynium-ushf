@@ -6,10 +6,10 @@ import 'package:flutter/rendering.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/widgets.dart';
 import 'package:uncle_sam_hf/db/database_operations.dart';
-import 'package:uncle_sam_hf/products.dart';
+import 'package:uncle_sam_hf/Pages/products.dart';
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:uncle_sam_hf/shopping_cart.dart';
+import 'package:uncle_sam_hf/Pages/shopping_cart.dart';
 
 class ProductDetails extends StatefulWidget {
   final String name;

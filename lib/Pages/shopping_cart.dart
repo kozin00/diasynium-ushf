@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:uncle_sam_hf/confirmOrder.dart';
+import 'package:uncle_sam_hf/Pages/confirmOrder.dart';
 
 class ShoppingCart extends StatefulWidget {
   @override

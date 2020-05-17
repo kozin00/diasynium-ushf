@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uncle_sam_hf/main.dart';
-import 'package:uncle_sam_hf/product_details.dart';
+import 'package:uncle_sam_hf/Pages/product_details.dart';
 
 class Products extends StatefulWidget {
   final String name;
